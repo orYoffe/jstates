@@ -24,7 +24,7 @@ describe("State", () => {
     state.subscribe(subscriber);
     const newState = { fake: "value", some: "new value" };
 
-    state.setState(newState).then(() => {
+    return state.setState(newState).then(() => {
       expect(state.state).toEqual(newState);
       expect(subscriber).toHaveBeenCalledWith(Object.keys(newState));
     });
