@@ -1,0 +1,39 @@
+{
+  "name": "jstates",
+  "version": "0.1.0",
+  "description": "JStates - A simple js state library",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "precommit": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orYoffe/create-react-native-web-app.git"
+  },
+  "keywords": [
+    "state",
+    "nodejs",
+    "backend",
+    "states",
+    "react",
+    "native",
+    "web",
+    "react-native",
+    "react-native-web"
+  ],
+  "author": {
+    "name": "Or Yoffe",
+    "url": "https://github.com/orYoffe"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/orYoffe/jstates/issues"
+  },
+  "homepage": "https://github.com/orYoffe/jstates#readme",
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "jest": "^23.1.0"
+  }
+}
