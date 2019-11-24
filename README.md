@@ -10,6 +10,23 @@ JStates - A simple js state library
 ![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/jstates.svg)
 ![npm](https://img.shields.io/npm/v/jstates.svg)
 
+## Why another state library
+
+Many developers need a state to communicate between their services/components.
+I wanted to introduce a very small [only 729B](https://bundlephobia.com/result?p=jstates),
+simple state solution that would work for most cases.
+
+In order to understand, compose or improve this library
+you don't need more than to jump into the small source code and extend the functionality or create your own.
+
+## Install
+
+```sh
+npm i -S jstates
+```
+
+# Usage
+
 ```js
 const State = require("jstates");
 
