@@ -1,6 +1,14 @@
+<div align="center">
+  <br><br><br><br><br>
+  <img src="https://raw.githubusercontent.com/oryoffe/jstates/master/jstates.png" alt="jstates Logo" width="400">
+  <br><br><br><br><br><br><br><br>
+</div>
+
 # JStates
 
 JStates - A simple js state library
+
+[JStates React](https://github.com/orYoffe/jstates-react)
 
 [![NPM](https://nodei.co/npm/jstates.png)](https://npmjs.org/package/jstates)
 

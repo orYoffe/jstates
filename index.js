@@ -20,18 +20,23 @@ class State {
     this.subscribers.push(fn);
   }
 
-  setState(updater, callback) {
+  setState(createState, callback) {
     return Promise.resolve().then(() => {
-      let nextState;
+      let newState;
 
-      if (typeof updater === "function") {
-        nextState = updater({ ...this.state });
+      if (typeof createState === "function") {
+        newState = createState({ ...this.state });
       } else {
-        nextState = updater;
+        newState = createState;
       }
 
-      const keysChanged = Object.keys(nextState);
-      this.state = Object.assign({}, this.state, nextState);
+      if (newState == null) {
+        if (callback) callback();
+        return;
+      }
+
+      const keysChanged = Object.keys(newState);
+      this.state = Object.assign({}, this.state, newState);
 
       return Promise.all(this.subscribers.map(sub => sub(keysChanged))).then(
         () => {
