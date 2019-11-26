@@ -8,7 +8,7 @@
 
 JStates - A simple js state library
 
-[JStates React](https://github.com/orYoffe/jstates-react)
+[JStates library for Reactjs](https://github.com/orYoffe/jstates-react)
 
 [![NPM](https://nodei.co/npm/jstates.png)](https://npmjs.org/package/jstates)
 

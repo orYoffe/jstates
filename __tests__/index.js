@@ -86,4 +86,112 @@ describe("State", () => {
         });
       });
   });
+
+  describe("performance", () => {
+    const createStatesAndSubscribers = howMany => {
+      // create states
+      const states = new Array(howMany).fill(null).map((d, i) => {
+        const initialState = {};
+        for (let index = 0; index < howMany; index++) {
+          initialState[`prop${index}`] = Math.random();
+        }
+        return new State(`state${i}`, initialState);
+      });
+      // create subscribers
+      const subscribers = new Array(howMany).fill(null).map(() => jest.fn());
+
+      // subscribe each subscriber to all states
+      subscribers.forEach(subscriber =>
+        states.forEach(state => state.subscribe(subscriber))
+      );
+      return { states, subscribers };
+    };
+
+    it("states times subscribers plus setState for each state", () => {
+      const t0 = performance.now();
+      const howMany = 500; // don't go over 1500, it starts being slow
+      const { states, subscribers } = createStatesAndSubscribers(howMany);
+
+      // create new state
+      const newState = {};
+      for (let index = 0; index < howMany; index++) {
+        newState[`newProp${index}`] = Math.random();
+      }
+
+      // call each setState on each state
+      return Promise.all(states.map(state => state.setState(newState))).then(
+        () => {
+          const t1 = performance.now();
+          expect(parseInt(t1 - t0, 10)).toBeLessThan(howMany ** 2);
+          console.log(
+            "\x1b[36m",
+            "*** Creating ",
+            "\x1b[32m",
+            howMany,
+            "\x1b[36m",
+            " states with each having",
+            "\x1b[32m",
+            howMany,
+            "\x1b[36m",
+            " subscribers and calling setState on each and having them update took ",
+            "\x1b[35m",
+            parseInt(t1 - t0, 10),
+            "\x1b[36m",
+            "milliseconds."
+          );
+
+          subscribers.forEach(subscriber =>
+            expect(subscriber).toHaveBeenCalledTimes(howMany)
+          );
+        }
+      );
+    });
+
+    it("states times subscribers times setState for each state", () => {
+      const t0 = performance.now();
+      const howMany = 100; // don't go over 100, it starts being slow
+      const { states, subscribers } = createStatesAndSubscribers(howMany);
+
+      // create new state
+      const newState = {};
+      for (let index = 0; index < howMany; index++) {
+        newState[`newProp${index}`] = Math.random();
+      }
+
+      // call setState howMany times on each state
+      const promises = [];
+      states.forEach(() => {
+        promises.concat(states.map(state => state.setState(newState)));
+      });
+      return Promise.all(promises).then(() => {
+        const t1 = performance.now();
+        expect(parseInt(t1 - t0, 10)).toBeLessThan(howMany ** 2 / 4);
+
+        console.log(
+          "\x1b[36m",
+          "*** Creating ",
+          "\x1b[32m",
+          howMany,
+          "\x1b[36m",
+          " states with each having",
+          "\x1b[32m",
+          howMany,
+          "\x1b[36m",
+          " subscribers and calling setState",
+          "\x1b[35m",
+          howMany + " times",
+          "\x1b[36m",
+          "on each and having them update took ",
+          "\x1b[35m",
+          parseInt(t1 - t0, 10),
+          "\x1b[36m",
+          "milliseconds."
+        );
+
+        subscribers.forEach(subscriber =>
+          expect(subscriber).toHaveBeenCalledTimes(howMany ** 2)
+        );
+      });
+    });
+  });
 });
