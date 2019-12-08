@@ -142,3 +142,34 @@ stateInstance.setState(<function or an object>, <callback>);
 stateInstance.subscribe(<function that will be called with the changed keys of the state>);
 
 ```
+
+### State Middleware
+
+```js
+const stateInstance = new State("myState", {});
+
+// hiding the original setState of the stateInstance
+const setState = stateInstance.setState;
+
+const lastModifiedMiddleWare = newState => {
+  const time = new Date();
+  console.log("State changed at ", time);
+  setState({ ...newState, lastModified: time });
+};
+
+// overriding setState
+stateInstance.setState = lastModifiedMiddleWare;
+
+export default stateInstance;
+```
+
+### Debugging state
+
+```js
+const stateInstance = new State("myState", {});
+
+stateInstance.subscribe(changedKeys => {
+  console.log("changedKeys: ", changedKeys);
+  console.log("stateInstance.state: ", stateInstance.state);
+});
+```
