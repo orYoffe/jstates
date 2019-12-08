@@ -122,27 +122,6 @@ userState.setState({ username: "John" });
 // => onUpdate: username changed to  John
 ```
 
-## API
-
-### State
-
-```js
-new State(<name>, <optional initial state>);
-// => returns state Instance
-```
-
-### State instance
-
-```js
-const stateInstance = new State('myState', {});
-
-stateInstance.setState(<function or an object>, <callback>);
-// => returns a promise
-
-stateInstance.subscribe(<function that will be called with the changed keys of the state>);
-
-```
-
 ### State Middleware
 
 ```js
@@ -163,7 +142,7 @@ stateInstance.setState = lastModifiedMiddleWare;
 export default stateInstance;
 ```
 
-### Debugging state
+## Debugging state
 
 ```js
 const stateInstance = new State("myState", {});
@@ -172,4 +151,25 @@ stateInstance.subscribe(changedKeys => {
   console.log("changedKeys: ", changedKeys);
   console.log("stateInstance.state: ", stateInstance.state);
 });
+```
+
+## API
+
+### State
+
+```js
+new State(<name>, <optional initial state>);
+// => returns state Instance
+```
+
+### State instance
+
+```js
+const stateInstance = new State('myState', {});
+
+stateInstance.setState(<function or an object>, <callback>);
+// => returns a promise
+
+stateInstance.subscribe(<function that will be called with the changed keys of the state>);
+
 ```
