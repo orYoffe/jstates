@@ -1,26 +1,19 @@
 class State {
-  constructor(name, initialState) {
-    if (typeof name !== "string" || name.length < 1) {
-      throw new Error(
-        "State was not given a name. new State(name, initialState)"
-      );
-    }
-
-    this.name = name;
+  constructor(initialState) {
     this.state = initialState;
     this.subscribers = [];
     this.setState = this.setState.bind(this);
   }
 
   unsubscribe(fn) {
-    this.subscribers = this.subscribers.filter(f => f !== fn);
+    this.subscribers = this.subscribers.filter((f) => f !== fn);
   }
 
   subscribe(fn) {
     this.subscribers.push(fn);
   }
 
-  setState(createState, callback) {
+  setState(createState = null, callback) {
     return Promise.resolve().then(() => {
       let newState;
 
@@ -35,10 +28,9 @@ class State {
         return;
       }
 
-      const keysChanged = Object.keys(newState);
       this.state = Object.assign({}, this.state, newState);
 
-      return Promise.all(this.subscribers.map(sub => sub(keysChanged))).then(
+      return Promise.all(this.subscribers.map((sub) => sub(this.state))).then(
         () => {
           if (callback) {
             return callback(this.state);

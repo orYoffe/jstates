@@ -20,8 +20,7 @@ JStates - A simple js state library
 ## Why another state library
 
 Many developers need a state to communicate between their services/components.
-I wanted to introduce a very small [only 729B and 402B gzip](https://bundlephobia.com/result?p=jstates),
-simple state solution that would work for most cases.
+I wanted to introduce a very small,simple state solution that would work for most cases.
 
 In order to understand, compose or improve this library,
 you don't need more than to jump into the small source code and extend the functionality or create your own.
@@ -37,35 +36,7 @@ npm i -S jstates
 ```js
 const State = require("jstates");
 
-const initialState = { counter: 0 };
-
-// initiate with a name and an optional initiat state
-const myState = new State("myState", initialState);
-
-console.log("myState.state: ", myState.state);
-// => myState.state: {counter: 0}
-
-// set a new state
-myState.setState({ counter: ++myState.state.counter });
-console.log("myState.state: ", myState.state);
-// => myState.state: {counter: 1}
-
-// set a new state with a function
-myState
-  .setState(state => ({ counter: ++state.counter }))
-  .then(() => {
-    console.log("myState.state: ", myState.state);
-    // => myState.state: {counter: 2}
-  });
-```
-
-### Subscribing for updates
-
-```js
-const State = require("jstates");
-
-const initialState = { counter: 0 };
-const myState = new State("myState", initialState);
+const myState = new State({ counter: 0 });
 
 function onUpdate() {
   console.log("onUpdate: counter changed to ", myState.state.counter);
@@ -75,62 +46,6 @@ myState.subscribe(onUpdate);
 
 myState.setState({ counter: ++myState.state.counter });
 // => onUpdate: counter changed to  1
-```
-
-### With multiple states
-
-It is recommended in order to separate your updates,
-to use multiple states to minimize the components that would be called on update
-
-```js
-const State = require("jstates");
-
-const counterState = new State("counterState", { counter: 0 });
-const userState = new State("userState", { username: "" });
-
-function onCounterUpdate() {
-  console.log("onCounterUpdate: counterState changed to ", counterState.state);
-}
-
-function onUserUpdate() {
-  console.log("onUserUpdate: userState changed to ", userState.state);
-}
-
-function onUpdate(updatedKeys) {
-  console.log("onUpdate: updatedKeys =", updatedKeys);
-
-  if (updatedKeys.indexOf("counter") > -1) {
-    console.log("onUpdate: counter changed to ", counterState.state.counter);
-  } else if (updatedKeys.indexOf("username") > -1) {
-    console.log("onUpdate: username changed to ", userState.state.username);
-  }
-}
-
-counterState.subscribe(onCounterUpdate);
-userState.subscribe(onUserUpdate);
-counterState.subscribe(onUpdate);
-userState.subscribe(onUpdate);
-
-counterState.setState({ counter: ++counterState.state.counter });
-// => onCounterUpdate: counterState changed to  {counter: 1}
-// => onUpdate: updatedKeys = ["counter"]
-// => onUpdate: counter changed to  1
-
-userState.setState({ username: "John" });
-// => onUserUpdate: userState changed to  {username: "John"}
-// => onUpdate: updatedKeys = ["username"]
-// => onUpdate: username changed to  John
-```
-
-## Debugging state
-
-```js
-const stateInstance = new State("myState", {});
-
-stateInstance.subscribe(changedKeys => {
-  console.log("changedKeys: ", changedKeys);
-  console.log("stateInstance.state: ", stateInstance.state);
-});
 ```
 
 ## API
@@ -145,11 +60,11 @@ new State(<name>, <optional initial state>);
 ### State instance
 
 ```js
-const stateInstance = new State('myState', {});
+const stateInstance = new State(<initial state>);
 
-stateInstance.setState(<function or an object>, <callback>);
+stateInstance.setState(<object or a function that returns and object >, <callback>);
 // => returns a promise
 
-stateInstance.subscribe(<function that will be called with the changed keys of the state>);
+stateInstance.subscribe(<function that will be called>);
 
 ```

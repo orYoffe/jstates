@@ -1,38 +1,29 @@
 const State = require("../index");
 
 describe("State", () => {
-  it("should throw an error when created without name", () => {
-    expect(() => new State()).toThrow(
-      "State was not given a name. new State(name, initialState)"
-    );
-  });
-
-  it("should initialize with name, state and subscribers", () => {
-    const name = "newState";
+  it("should initialize with state", () => {
     const initialState = { fake: "value" };
-    const state = new State(name, initialState);
+    const state = new State(initialState);
 
-    expect(state.name).toEqual(name);
     expect(state.state).toEqual(initialState);
   });
 
-  it("should change state and call subscribed functions with the changed keys when state changes", () => {
-    const name = "newState";
+  it("should change state and call subscribed functions when state changes", () => {
     const initialState = { fake: "value" };
-    const state = new State(name, initialState);
+    const state = new State(initialState);
     const subscriber = jest.fn();
     state.subscribe(subscriber);
     const newState = { fake: "value", some: "new value" };
 
     return state.setState(newState).then(() => {
       expect(state.state).toEqual(newState);
-      expect(subscriber).toHaveBeenCalledWith(Object.keys(newState));
+      expect(subscriber).toHaveBeenCalledTimes(1);
     });
   });
 
   it("integration", () => {
-    const counterState = new State("counterState", { counter: 0 });
-    const userState = new State("userState", { username: "" });
+    const counterState = new State({ counter: 0 });
+    const userState = new State({ username: "" });
 
     let counterUpdateCount = 0;
     function onCounterUpdate() {
@@ -44,17 +35,9 @@ describe("State", () => {
       ++userUpdateCount;
     }
 
-    let anyUpdateCounterCount = 0;
-    let anyUpdateUserCount = 0;
     let anyUpdateCount = 0;
-    function onUpdate(updatedKeys) {
+    function onUpdate() {
       ++anyUpdateCount;
-
-      if (updatedKeys.indexOf("counter") > -1) {
-        ++anyUpdateCounterCount;
-      } else if (updatedKeys.indexOf("username") > -1) {
-        ++anyUpdateUserCount;
-      }
     }
 
     counterState.subscribe(onCounterUpdate);
@@ -63,8 +46,6 @@ describe("State", () => {
     userState.subscribe(onUpdate);
 
     expect(anyUpdateCount).toEqual(0);
-    expect(anyUpdateCounterCount).toEqual(0);
-    expect(anyUpdateUserCount).toEqual(0);
     expect(counterUpdateCount).toEqual(0);
     expect(userUpdateCount).toEqual(0);
 
@@ -72,15 +53,11 @@ describe("State", () => {
       .setState({ counter: ++counterState.state.counter })
       .then(() => {
         expect(anyUpdateCount).toEqual(1);
-        expect(anyUpdateCounterCount).toEqual(1);
-        expect(anyUpdateUserCount).toEqual(0);
         expect(counterUpdateCount).toEqual(1);
         expect(userUpdateCount).toEqual(0);
 
         return userState.setState({ username: "John" }).then(() => {
           expect(anyUpdateCount).toEqual(2);
-          expect(anyUpdateCounterCount).toEqual(1);
-          expect(anyUpdateUserCount).toEqual(1);
           expect(counterUpdateCount).toEqual(1);
           expect(userUpdateCount).toEqual(1);
         });
@@ -88,21 +65,21 @@ describe("State", () => {
   });
 
   describe("performance", () => {
-    const createStatesAndSubscribers = howMany => {
+    const createStatesAndSubscribers = (howMany) => {
       // create states
       const states = new Array(howMany).fill(null).map((d, i) => {
         const initialState = {};
         for (let index = 0; index < howMany; index++) {
           initialState[`prop${index}`] = Math.random();
         }
-        return new State(`state${i}`, initialState);
+        return new State(initialState);
       });
       // create subscribers
       const subscribers = new Array(howMany).fill(null).map(() => jest.fn());
 
       // subscribe each subscriber to all states
-      subscribers.forEach(subscriber =>
-        states.forEach(state => state.subscribe(subscriber))
+      subscribers.forEach((subscriber) =>
+        states.forEach((state) => state.subscribe(subscriber))
       );
       return { states, subscribers };
     };
@@ -119,7 +96,7 @@ describe("State", () => {
       }
 
       // call each setState on each state
-      return Promise.all(states.map(state => state.setState(newState))).then(
+      return Promise.all(states.map((state) => state.setState(newState))).then(
         () => {
           const t1 = performance.now();
           expect(parseInt(t1 - t0, 10)).toBeLessThan(howMany ** 2);
@@ -140,7 +117,7 @@ describe("State", () => {
             "milliseconds."
           );
 
-          subscribers.forEach(subscriber =>
+          subscribers.forEach((subscriber) =>
             expect(subscriber).toHaveBeenCalledTimes(howMany)
           );
         }
@@ -161,7 +138,7 @@ describe("State", () => {
       // call setState howMany times on each state
       const promises = [];
       states.forEach(() => {
-        promises.concat(states.map(state => state.setState(newState)));
+        promises.concat(states.map((state) => state.setState(newState)));
       });
       return Promise.all(promises).then(() => {
         const t1 = performance.now();
@@ -188,7 +165,7 @@ describe("State", () => {
           "milliseconds."
         );
 
-        subscribers.forEach(subscriber =>
+        subscribers.forEach((subscriber) =>
           expect(subscriber).toHaveBeenCalledTimes(howMany ** 2)
         );
       });
