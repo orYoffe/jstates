@@ -1,6 +1,6 @@
 {
   "name": "jstates",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "JStates - A simple js state library",
   "main": "dist/index.min.js",
   "module": "dist/index.es.js",

@@ -1,29 +1,29 @@
-const State = require("../index");
+const createState = require("../index");
 
 describe("State", () => {
-  it("should initialize with state", () => {
+  it("should initialize initialState, state and subscribers", () => {
     const initialState = { fake: "value" };
-    const state = new State(initialState);
+    const state = createState(initialState);
 
-    expect(state.state).toEqual(initialState);
+    expect(state.getState()).toEqual(initialState);
   });
 
   it("should change state and call subscribed functions when state changes", () => {
     const initialState = { fake: "value" };
-    const state = new State(initialState);
+    const state = createState(initialState);
     const subscriber = jest.fn();
     state.subscribe(subscriber);
     const newState = { fake: "value", some: "new value" };
 
     return state.setState(newState).then(() => {
-      expect(state.state).toEqual(newState);
+      expect(state.getState()).toEqual(newState);
       expect(subscriber).toHaveBeenCalledTimes(1);
     });
   });
 
   it("integration", () => {
-    const counterState = new State({ counter: 0 });
-    const userState = new State({ username: "" });
+    const counterState = createState({ counter: 0 });
+    const userState = createState({ username: "" });
 
     let counterUpdateCount = 0;
     function onCounterUpdate() {
@@ -50,7 +50,7 @@ describe("State", () => {
     expect(userUpdateCount).toEqual(0);
 
     return counterState
-      .setState({ counter: ++counterState.state.counter })
+      .setState({ counter: ++counterState.getState().counter })
       .then(() => {
         expect(anyUpdateCount).toEqual(1);
         expect(counterUpdateCount).toEqual(1);
@@ -72,7 +72,7 @@ describe("State", () => {
         for (let index = 0; index < howMany; index++) {
           initialState[`prop${index}`] = Math.random();
         }
-        return new State(initialState);
+        return createState(initialState);
       });
       // create subscribers
       const subscribers = new Array(howMany).fill(null).map(() => jest.fn());

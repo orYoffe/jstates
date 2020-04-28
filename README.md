@@ -34,33 +34,36 @@ npm i -S jstates
 ## Usage
 
 ```js
-const State = require("jstates");
+const createState = require("jstates");
 
-const myState = new State({ counter: 0 });
+const myState = createState({ counter: 0 });
 
 function onUpdate() {
-  console.log("onUpdate: counter changed to ", myState.state.counter);
+  console.log("onUpdate: counter changed to ", myState.getState().counter);
 }
 
 myState.subscribe(onUpdate);
 
-myState.setState({ counter: ++myState.state.counter });
+myState.setState({ counter: ++myState.getState().counter });
 // => onUpdate: counter changed to  1
 ```
 
 ## API
 
-### State
+### createState
 
 ```js
-new State(<name>, <optional initial state>);
+createState(<optional initial state>);
 // => returns state Instance
 ```
 
 ### State instance
 
 ```js
-const stateInstance = new State(<initial state>);
+const stateInstance = createState();
+
+stateInstance.getState();
+// => returns the current state
 
 stateInstance.setState(<object or a function that returns and object >, <callback>);
 // => returns a promise
