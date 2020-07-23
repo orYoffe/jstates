@@ -6,21 +6,21 @@
 
 # JStates
 
-JStates - A simple js state library
+A super small, simple and fast ⚡ JavaScript state library
 
-[JStates library for Reactjs](https://github.com/orYoffe/jstates-react)
+Also checkout [JStates library for Reactjs](https://github.com/orYoffe/jstates-react)
 
 [![NPM](https://nodei.co/npm/jstates.png)](https://npmjs.org/package/jstates)
 
 ![GitHub issues](https://img.shields.io/github/issues/orYoffe/jstates.svg)
 ![license](https://img.shields.io/github/license/orYoffe/jstates.svg)
-![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/jstates.svg)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/jstates)
 ![npm](https://img.shields.io/npm/v/jstates.svg)
 
 ## Why another state library
 
 Many developers need a state to communicate between their services/components.
-I wanted to introduce a very small,simple state solution that would work for most cases.
+I wanted to introduce a very small, simple state solution that would work for most cases.
 
 In order to understand, compose or improve this library,
 you don't need more than to jump into the small source code and extend the functionality or create your own.
@@ -38,36 +38,48 @@ const createState = require("jstates");
 
 const myState = createState({ counter: 0 });
 
-function onUpdate() {
-  console.log("onUpdate: counter changed to ", myState.getState().counter);
+function onUpdate(state) {
+  console.log("onUpdate: counter changed to ", state.counter);
 }
 
 myState.subscribe(onUpdate);
 
-myState.setState({ counter: ++myState.getState().counter });
+// Updating with an object
+myState.setState({ counter: ++myState.state.counter });
 // => onUpdate: counter changed to  1
+
+// Updating with a function
+myState.setState((state) => ({ counter: ++state.counter }));
+// => onUpdate: counter changed to  2
 ```
 
 ## API
 
-### createState
-
 ```js
-createState(<optional initial state>);
-// => returns state Instance
-```
+const initialState = {};
+const stateInstance = createState(initialState);
+/* => returns state Instance
+{
+  state,
+  subscribers,
+  setState,
+  subscribe,
+  unsubscribe,
+};
+*/
 
-### State instance
+// Get the state
+stateInstance.state;
 
-```js
-const stateInstance = createState();
-
-stateInstance.getState();
-// => returns the current state
-
-stateInstance.setState(<object or a function that returns and object >, <callback>);
+// Change the state
+stateInstance.setState(<object or a function that returns and object>);
 // => returns a promise
 
-stateInstance.subscribe(<function that will be called>);
+// Subscribe to state changes
+stateInstance.subscribe(<function that will be called with the state on each update>);
+
+
+// Unsubscribe from state changes
+stateInstance.unsubscribe(<function that already subscribed>);
 
 ```
