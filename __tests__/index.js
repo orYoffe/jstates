@@ -168,7 +168,7 @@ describe("State", () => {
         });
         return Promise.all(promises).then(() => {
           const t1 = performance.now();
-          expect(parseInt(t1 - t0, 10)).toBeLessThan(howMany * 40);
+          expect(parseInt(t1 - t0, 10)).toBeLessThan(howMany * 40 + 150);
 
           console.log(
             "\x1b[36m",
