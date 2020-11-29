@@ -34,7 +34,7 @@ npm i -S jstates
 ## Usage
 
 ```js
-const createState = require("jstates");
+import createState from "jstates";
 
 const myState = createState({ counter: 0 });
 

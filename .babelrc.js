@@ -13,6 +13,7 @@ module.exports = {
         },
       },
     ],
+    "@babel/preset-typescript",
   ],
   plugins: [cjs && "transform-es2015-modules-commonjs"].filter(Boolean),
 };
