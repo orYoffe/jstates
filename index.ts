@@ -1,5 +1,5 @@
-type JState = Object | null | undefined;
-type JStateSubscribers = Function[];
+export type JState = Object | null | undefined;
+export type JStateSubscribers = Function[];
 
 function createState(initialState: JState) {
   const subscribers: JStateSubscribers = [];
