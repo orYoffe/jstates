@@ -73,7 +73,7 @@ describe("State", () => {
       });
   });
 
-  describe("performance", () => {
+  xdescribe("performance", () => {
     const createStatesAndSubscribers = (howMany) => {
       // create states
       const states = new Array(howMany).fill(null).map((d, i) => {
