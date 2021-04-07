@@ -1,7 +1,7 @@
 export type JState = Object | null | undefined;
 export type JStateSubscribers = Function[];
 
-function createState(initialState: JState) {
+export function createState(initialState: JState) {
   const subscribers: JStateSubscribers = [];
   return {
     state: initialState,
@@ -27,4 +27,4 @@ function createState(initialState: JState) {
   };
 }
 
-export default createState;
+export type JstateInstance = ReturnType<typeof createState>;

@@ -34,7 +34,8 @@ npm i -S jstates
 ## Usage
 
 ```js
-import createState from "jstates";
+import { createState } from "jstates";
+// types exported: import { JState, JStateSubscribers, JstateInstance } from "jstates";
 
 const myState = createState({ counter: 0 });
 

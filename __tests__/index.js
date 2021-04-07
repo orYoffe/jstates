@@ -1,4 +1,4 @@
-import createState from "../index";
+import { createState } from "../index";
 
 describe("State", () => {
   it("should initialize initialState, state and subscribers", () => {
