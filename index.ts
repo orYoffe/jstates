@@ -7,13 +7,14 @@ export function createState(initialState: JState) {
     state: initialState,
     subscribers,
     setState(getState: Function | JState): Promise<JState[]> {
+      let oldState = JSON.parse(JSON.stringify(this.state));
       this.state = Object.assign(
         {},
         this.state,
-        typeof getState === "function" ? getState(this.state) : getState
+        typeof getState === "function" ? getState(this.state, oldState) : getState
       );
       return Promise.all(
-        this.subscribers.map((sub: Function) => sub(this.state))
+        this.subscribers.map((sub: Function) => sub(this.state, oldState))
       );
     },
     subscribe(fn: Function): void {
