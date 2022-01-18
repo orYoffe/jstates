@@ -1,5 +1,6 @@
 export type JState = Object | null | undefined;
-export type JStateSubscribers = Function[];
+export type JStateSubscribers = JStateSubscriber[];
+export type JStateSubscriber = (newState: JState, oldState: JState) => any | void;
 
 export function createState(initialState: JState) {
   const subscribers: JStateSubscribers = [];
@@ -14,13 +15,13 @@ export function createState(initialState: JState) {
         typeof getState === "function" ? getState(this.state, oldState) : getState
       );
       return Promise.all(
-        this.subscribers.map((sub: Function) => sub(this.state, oldState))
+        this.subscribers.map((sub: JStateSubscriber) => sub(this.state, oldState))
       );
     },
-    subscribe(fn: Function): void {
+    subscribe(fn: JStateSubscriber): void {
       this.subscribers.push(fn);
     },
-    unsubscribe(fn: Function): void {
+    unsubscribe(fn: JStateSubscriber): void {
       this.subscribers = this.subscribers.filter(function (f) {
         return f !== fn;
       });
