@@ -1,3 +1,5 @@
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+
 <div align="center">
   <br><br><br><br><br>
   <img src="https://raw.githubusercontent.com/oryoffe/jstates/master/jstates.png" alt="jstates Logo" width="400">
