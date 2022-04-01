@@ -86,3 +86,4 @@ stateInstance.subscribe(<function that will be called with the state on each upd
 stateInstance.unsubscribe(<function that already subscribed>);
 
 ```
+ 
