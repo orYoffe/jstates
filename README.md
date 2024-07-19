@@ -1,5 +1,5 @@
 [![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
-## Warning: Project is not actively maintained. This project was supposed to be an example of how simple state libraries can be.
+
 <div align="center">
   <br><br><br><br><br>
   <img src="https://raw.githubusercontent.com/oryoffe/jstates/master/jstates.png" alt="jstates Logo" width="400">
@@ -37,7 +37,7 @@ npm i -S jstates
 
 ```js
 import { createState } from "jstates";
-// types exported: import { JState, JStateSubscribers, JstateInstance } from "jstates";
+// types exported: import { JStateGetState, SubFunction, JstateInstance } from "jstates";
 
 const myState = createState({ counter: 0 });
 
