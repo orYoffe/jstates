@@ -1,10 +1,10 @@
 import { vi } from "vitest";
-import { createState, JstateInstance } from "jstates";
-import exp from "constants";
+import { createState } from "./index";
 
 interface TodoState {
   todos: string[];
 }
+
 describe("State ToDo app", () => {
   it("should initialise and update properly", () => {
     const todosState = createState<TodoState>({

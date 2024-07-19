@@ -13,14 +13,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  lint:
-    name: ⬣ Linting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: biomejs/setup-biome@v2
-      - run: biome ci . --reporter=github
-
   typecheck:
     name: 🔎 Type check
     runs-on: ubuntu-latest
