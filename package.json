@@ -1,17 +1,36 @@
 {
   "name": "jstates",
-  "version": "0.5.2",
+  "version": "1.0.0",
   "description": "JStates - A simple js state library",
-  "main": "dist/index.min.js",
-  "module": "dist/index.es.js",
-  "browser": "dist/index.iife.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "import": "./dist/index.js",
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "require": {
+        "import": "./dist/index.cjs",
+        "require": "./dist/index.cjs",
+        "default": "./dist/index.cjs",
+        "types": "./dist/index.d.ts"
+      }
+    }
+  },
   "scripts": {
-    "test": "jest",
-    "test-watch": "jest --watch",
-    "build": "npx rimraf dist && rollup -c",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
+    "build": "tsup src/index.ts  --dts --format esm,cjs --outDir dist --minify --clean",
+    "build:dev": "tsup src/index.ts --dts --format cjs,esm  --outDir dist",
+    "build:dev:watch": "npm run build:dev -- --watch",
+    "build:dev:cjs:watch": "npm run build:dev -- --watch",
     "prepublishOnly": "npm run build",
-    "precommit": "npm run build && npm run test"
+    "typecheck": "tsc --noEmit",
+    "validate": " npm run typecheck && npm run test"
   },
   "files": [
     "dist"
@@ -41,17 +60,11 @@
   },
   "homepage": "https://github.com/orYoffe/jstates#readme",
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.12.7",
-    "@babel/preset-typescript": "7.12.7",
-    "babel-jest": "^24.9.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "husky": "^3.1.0",
-    "jest": "^24.9.0",
-    "rollup": "^1.32.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.29.0",
-    "tslib": "^2.0.3",
-    "typescript": "4.1.2"
+    "@types/node": "^20.12.7",
+    "@vitest/coverage-v8": "^1.5.2",
+    "pkg-pr-new": "^0.0.17",
+    "tsup": "8.1.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.2"
   }
 }
