@@ -9,8 +9,7 @@
 # JStates
 
 A super small, simple and fast ⚡ JavaScript state library
-
-Also checkout [JStates library for Reactjs](https://github.com/orYoffe/jstates-react)
+A simple Observer (publisher - subscriber) pattern implementaion
 
 [![NPM](https://nodei.co/npm/jstates.png)](https://npmjs.org/package/jstates)
 
@@ -35,6 +34,8 @@ npm i -S jstates
 
 ## Usage
 
+### Counter
+
 ```js
 import { createState } from "jstates";
 // types exported: import { JStateGetState, SubFunction, JstateInstance } from "jstates";
@@ -56,33 +57,32 @@ myState.setState((state) => ({ counter: ++state.counter }));
 // => onUpdate: counter changed to  2
 ```
 
-## API
+### Todos (TS)
 
-```js
-const initialState = {};
-const stateInstance = createState(initialState);
-/* => returns state Instance
-{
-  state,
-  subscribers,
-  setState,
-  subscribe,
-  unsubscribe,
+```ts
+import { createState } from "jstates";
+const todosState = createState<TodoState>({
+  todos: [],
+});
+
+function onUpdate(state: typeof todosState.state) {
+  console.log("onUpdate: todos changed to ", state.todos);
+}
+
+todosState.subscribe(onUpdate);
+
+function removeTodo(todo: string) {
+  todosState.setState((s: typeof todosState.state) => ({
+    todos: s.todos.filter((t: string) => t !== todo),
+  }));
+}
+
+const addTodo = (todo: string) => {
+  todosState.setState((s: typeof todosState.state) => ({
+    todos: s.todos.concat(todo),
+  }));
 };
-*/
 
-// Get the state
-stateInstance.state;
-
-// Change the state
-stateInstance.setState(<object or a function that returns and object>);
-// => returns a promise
-
-// Subscribe to state changes
-stateInstance.subscribe(<function that will be called with the state on each update>);
-
-
-// Unsubscribe from state changes
-stateInstance.unsubscribe(<function that already subscribed>);
-
+addTodo("Buy milk");
+addTodo("Buy eggs");
 ```

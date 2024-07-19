@@ -60,12 +60,8 @@
   },
   "homepage": "https://github.com/orYoffe/jstates#readme",
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
     "@types/node": "^20.12.7",
     "@vitest/coverage-v8": "^1.5.2",
-    "happy-dom": "^14.7.1",
-    "lefthook": "^1.7.2",
-    "npm-run-all": "^4.1.5",
     "tsup": "8.1.2",
     "typescript": "^5.4.5",
     "vitest": "^1.5.2"
